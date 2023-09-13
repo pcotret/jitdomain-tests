@@ -47,6 +47,19 @@
 # starting in this domain can directly be written in test_start.
 # If instead it should start from domain1, use the following
 # example to jump to domain1!
+#
+# Important registers:
+# \____________________
+#
+# ╔══════════╦═══════════════╗ 
+# ║ s4 (x20) ║ Domain 0 data ║
+# ╠══════════╬═══════════════╣
+# ║ s5 (x21) ║ Domain 1 data ║
+# ╠══════════╬═══════════════╣
+# ║ s6 (x22) ║ Domain 2 data ║
+# ╚══════════╩═══════════════╝
+#
+# Note: see include/test_setup.S for more details!
 
 
 # in Domain 0

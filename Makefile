@@ -39,7 +39,9 @@ incs  += -I$(com_dir) -I$(inc_dir)
 
 csr_dir = $(src_dir)/csr
 dom_chg_dir = $(src_dir)/domain-change
-mem_acc_dir = $(src_dir)/mem-access/base $(src_dir)/mem-access/duplicated $(src_dir)/mem-access/shadow-stack
+base_mem_dir = $(src_dir)/mem-access/base
+dup_mem_dir = $(src_dir)/mem-access/duplicated
+ss_mem_dir = $(src_dir)/mem-access/shadow-stack
 helper_dir = $(src_dir)/helpers
 
 test_dirs = $(csr_dir) $(dom_chg_dir) $(mem_acc_dir) $(helper_dir)
@@ -61,7 +63,13 @@ bin/%.o: $(csr_dir)/%.S
 bin/%.o: $(dom_chg_dir)/%.S
 	$(rv-gcc)
 
-bin/%.o: $(mem_acc_dir)/%.S
+bin/%.o: $(base_mem_dir)/%.S
+	$(rv-gcc)
+
+bin/%.o: $(dup_mem_dir)/%.S
+	$(rv-gcc)
+
+bin/%.o: $(ss_mem_dir)/%.S
 	$(rv-gcc)
 
 bin/%.o: $(helper_dir)/%.S
