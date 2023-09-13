@@ -1,3 +1,9 @@
+#include "test_setup.S"
+
+.section .text
+
+# Memory Layout :
+# \_______________
 #
 # The memory layout of all tests is the following:
 # 
@@ -27,54 +33,31 @@
 # ╠══════════════════╬═══════════════════╣<══╝ 
 # ╚══════════════════╩═══════════════════╝  high address
 #
+# Note: see include/pmp_setup.S for more details!
+# 
+# Test Description :
+# \__________________
+# 
+# Describe the objective of the test
+#
+# Important notes:
+# \________________
+#
+# The base test_start lies in the code of the domain0, a test
+# starting in this domain can directly be written in test_start.
+# If instead it should start from domain1, use the following
+# example to jump to domain1!
 
-.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0
 
-.equiv PMP_ADDR1, 0x80002e00  # Should be equal to top range of data_region0
+# in Domain 0
 
-.equiv PMP_ADDR2, 0x80002f00  # Should be equal to top range of data_region1
+test_start:
+    la t1, test_start_dom1
+    chdom
+    ret
 
-.equiv PMP_CONFIG, 0x00070707
+# in Domain 1
 
-.equiv MASK_MPP_USER_MODE, 0xFFFFE7FF
-
-.section .text
-
-# Note: pmp_setup expects to jump to a user-defined function named
-#       test_start once it switched to user-mode!
-
-pmp_setup:
-    # Read the mode
-    csrr t0, mstatus
-
-    # Setup user mode
-    li t1, MASK_MPP_USER_MODE
-    and t0, t0, t1             # Set MPP to user mode
-    or t0, t0, 8               # Set MIE
-    csrw mstatus, t0           # Write the value back to the CSR
-
-    # Setup user mode entry address
-    la t0, test_start
-    csrw mepc, t0
-
-    # Setup first PMP region
-    li t0, PMP_ADDR0
-    srli t0, t0, 2    # Note: addr should be shifted by 2
-    csrw pmpaddr0, t0
-
-    # Setup second PMP region
-    li t0, PMP_ADDR1
-    srli t0, t0, 2    # Note: addr should be shifted by 2
-    csrw pmpaddr1, t0
-
-    # Setup third PMP region
-    li t0, PMP_ADDR2
-    srli t0, t0, 2    # Note: addr should be shifted by 2
-    csrw pmpaddr2, t0
-
-    # Setup PMP config 
-    li t0, PMP_CONFIG
-    csrw pmpcfg0, t0
-
-    # Jump to the mepc address (test_start)
-    mret
+test_start_dom1:
+    nop
+    ret
