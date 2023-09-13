@@ -19,3 +19,6 @@ data_region0:
 
 data_region1:
     .incbin "data/data.bin"
+
+data_region2:
+    .incbin "data/data.bin"
