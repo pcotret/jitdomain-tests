@@ -10,7 +10,7 @@
 # Should:      fail
 # 
 # Base loads/stores should NOT access domain 1
-# data from domain 0
+# data from domain 0 (data error)
 #
 
 

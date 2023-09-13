@@ -10,7 +10,7 @@
 # Should:      fail
 # 
 # Base loads/stores should NOT access domain 2
-# data from domain 1
+# data from domain 1 (data error)
 #
 
 
@@ -20,8 +20,8 @@ test_start:
     chdom
     ret
 
-test_start:
+test_start_dom1:
     /* Load the address of the domain 2 data */
     la  t1, data_region2
     lbu t2, 40(t1)
-    ret
+    retdom

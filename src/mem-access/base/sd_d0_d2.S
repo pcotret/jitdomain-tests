@@ -7,10 +7,10 @@
 #
 # Executes in: domain 0
 # Accesses:    domain 2
-# Shousd:      fail
+# Should:      fail
 # 
-# Base loads/stores shousd NOT access domain 2
-# data from domain 0
+# Base loads/stores should NOT access domain 2
+# data from domain 0 (data error)
 #
 
 

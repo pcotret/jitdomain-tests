@@ -20,8 +20,8 @@ test_start:
     chdom
     ret
 
-test_start:
+test_start_dom1:
     /* Load the address of the domain 1 data */
     la  t1, data_region1
     lhu t2, 40(t1)
-    ret
+    retdom

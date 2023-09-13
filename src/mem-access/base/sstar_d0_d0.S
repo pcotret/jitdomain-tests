@@ -9,8 +9,8 @@
 # Accesses:    domain 0
 # Should:      pass
 # 
-# Base loads/stores should access domain 0 data
-# from domain 0
+# Base loads/stores SHOULD access domain 0 data
+# from domain 0!
 #
 
 

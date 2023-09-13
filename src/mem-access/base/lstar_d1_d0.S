@@ -30,4 +30,4 @@ test_start_dom1:
     lw  t2, 40(t1)
     lwu t2, 40(t1)
     ld  t2, 40(t1)
-    ret
+    retdom
