@@ -10,6 +10,13 @@ com_dir = common
 inc_dir = include
 bin_dir = bin
 
+csr_dir = $(src_dir)/csr
+dom_chg_dir = $(src_dir)/domain-change
+base_mem_dir = $(src_dir)/mem-access/base
+dup_mem_dir = $(src_dir)/mem-access/duplicated
+ss_mem_dir = $(src_dir)/mem-access/shadow-stack
+helper_dir = $(src_dir)/helpers
+
 # Specify flags
 XLEN ?= 64
 RISCV_PREFIX ?= $(RISCV)/bin/riscv$(XLEN)-unknown-elf-
@@ -18,12 +25,20 @@ RISCV_GCC_OPTS ?= -march=rv64g  -mabi=lp64d -DPREALLOCATE=1 -mcmodel=medany -sta
 RISCV_LINK_OPTS ?= -static -nostdlib -nostartfiles -lm -lgcc -T test.ld
 RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble --full-contents --disassemble-zeroes --section=.text --section=.text.dom0_code --section=.text.dom1_code --section=.text.startup --section=.text.init --section=.data --section=.data.dom1_data --section=.data.dom2_data --section=.data.dom0_data
 
+define rv-gcc
+$(RISCV_GCC) $(incs) $(RISCV_GCC_OPTS) $< -c -o $@ 
+endef
+
 MAX_CYCLES ?= 100000000
 
 # Define sources
 COMS_C=$(wildcard $(com_dir)/*.c) 
 COMS_S=$(wildcard $(com_dir)/*.S)
 COMS_O=$(patsubst $(com_dir)/%.c,$(bin_dir)/%.o,$(COMS_C)) $(patsubst $(com_dir)/%.S,$(bin_dir)/%.o,$(COMS_S))
+
+
+ALL_S=$(wildcard $(src_dir)/*/*.S $(src_dir)/*/*/*.S)
+ALL_O=$(patsubst )
 
 # Check info
 # $(info COMS_O is $(COMS_O))
@@ -36,19 +51,6 @@ incs  += -I$(com_dir) -I$(inc_dir)
 # the objcopy way, the issue with this method is that the labels are auto generated!
 # $(bin_dir)/out.o: $(bin_dir)/out.bin
 # 	$(RISCV_PREFIX)objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.text $^ $@
-
-csr_dir = $(src_dir)/csr
-dom_chg_dir = $(src_dir)/domain-change
-base_mem_dir = $(src_dir)/mem-access/base
-dup_mem_dir = $(src_dir)/mem-access/duplicated
-ss_mem_dir = $(src_dir)/mem-access/shadow-stack
-helper_dir = $(src_dir)/helpers
-
-test_dirs = $(csr_dir) $(dom_chg_dir) $(mem_acc_dir) $(helper_dir)
-
-define rv-gcc
-$(RISCV_GCC) $(incs) $(RISCV_GCC_OPTS) $< -c -o $@ 
-endef
 
 # Generate the object files
 bin/%.o: $(com_dir)/%.c
@@ -100,7 +102,7 @@ bin/%.corelog: $(bin_dir)/%.elf emudef
 bin/%.vcd: $(bin_dir)/%.elf emudef
 	$(EMULATOR) +max-cycles=$(MAX_CYCLES) +verbose -v $@ $< 2>&1 | \
 	$(RISCV)/bin/spike-dasm > bin/out.corelog
-	gtkwave $@ -S $(src_dir)/gtkwave_config/config.tcl -r $(src_dir)/gtkwave_config/.gtkwaverc
+		gtkwave $@ -S $(src_dir)/gtkwave_config/config.tcl -r $(src_dir)/gtkwave_config/.gtkwaverc
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
@@ -111,3 +113,5 @@ CORE_LOGS=$(wildcard $(bin_dir)/*.corelog)
 
 clean:
 	rm -rf $(wildcard $(bin_dir)/*)
+
+all: clean $

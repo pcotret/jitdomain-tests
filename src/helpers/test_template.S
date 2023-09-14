@@ -33,7 +33,7 @@
 # ╠══════════════════╬═══════════════════╣<══╝ 
 # ╚══════════════════╩═══════════════════╝  high address
 #
-# Note: see include/pmp_setup.S for more details!
+# Note: see include/pmp_dmp_setup.S for more details!
 # 
 # Test Description :
 # \__________________
