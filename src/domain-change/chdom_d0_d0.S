@@ -14,6 +14,8 @@
 #
 
 
+.section .text.dom0_code
+
 test_start:
     /* Jump to domain 0 */
     la t1, test_landing_dom0

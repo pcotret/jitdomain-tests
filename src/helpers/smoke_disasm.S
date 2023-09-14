@@ -9,6 +9,8 @@
 # This test is a disassembly test to check the sanity of the toolchain.
 # It should not be actually ran!
 
+.section .text.dom0_code
+
 test_start:
     
     lb1  a0, 8(s2)

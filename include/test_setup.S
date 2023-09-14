@@ -14,11 +14,17 @@ main:
 
 .section .data
 
-data_region0:
-    .incbin "data/data.bin"
+.section .data.dom1_data
 
 data_region1:
     .incbin "data/data.bin"
+
+.section .data.dom0_data
+
+data_region0:
+    .incbin "data/data.bin"
+
+.section .data.dom2_data
 
 data_region2:
     .incbin "data/data.bin"

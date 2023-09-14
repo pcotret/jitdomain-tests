@@ -14,6 +14,8 @@
 #
 
 
+.section .text.dom0_code
+
 test_start:
     /* Load the address of the domain 0 data */
     la  t1, data_region0

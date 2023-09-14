@@ -64,12 +64,16 @@
 
 # in Domain 0
 
+.section .text.dom0_code
+
 test_start:
     la t1, test_start_dom1
     chdom
     ret
 
 # in Domain 1
+
+.section .text.dom1_code
 
 test_start_dom1:
     nop

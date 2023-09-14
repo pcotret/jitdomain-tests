@@ -14,11 +14,15 @@
 #
 
 
+.section .text.dom0_code
+
 test_start:
     /* Jump to domain 1 */
     la t1, test_start_dom1
     chdom
     ret
+
+.section .text.dom1_code
 
 test_start_dom1:
     /* Load the address of the domain 1 data */

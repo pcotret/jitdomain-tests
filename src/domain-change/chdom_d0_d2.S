@@ -9,10 +9,12 @@
 # Accesses:    domain 2
 # Should:      fail
 # 
-# chdom can not be used between domain 0
+# chdom should NOT be used between domain 0
 # and domain 2 (data error)
 #
 
+
+.section .text.dom0_code
 
 test_start:
     /* Jump to domain 0 */
