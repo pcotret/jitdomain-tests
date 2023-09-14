@@ -18,6 +18,42 @@ ENTRY(_start)
 /* Sections                                                             */
 /*----------------------------------------------------------------------*/
 
+/* The memory layout of all tests is the following:                     */
+/*                                                                      */
+/* ╔══════════════════╦═══════════════════╗  low address                */
+/* ║ //////////////// ║                   ║                             */
+/* ║ //(DOM 0 CODE)// ║ (defined in PMP2) ║                             */
+/* ║ //////////////// ║                   ║                             */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║    DOM 1 CODE    ║ PMP0 - RX - NAPOT ║                             */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║    DOM 1 DATA    ║ PMP1 - RW - NAPOT ║                             */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║ //////////////// ║                   ║                             */
+/* ║ // DOM 0 CODE // ║ PMP2 - RX - TOR   ║═══╗                         */
+/* ║ //////////////// ║                   ║   ║ TOR points here         */
+/* ╠══════════════════╬═══════════════════╣<══╝                         */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║ //////////////// ║                   ║                             */
+/* ║ //(DOM 0 DATA)// ║ (defined in PMP4) ║                             */
+/* ║ //////////////// ║                   ║                             */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║    DOM 2 DATA    ║ PMP3 - RW - NAPOT ║                             */
+/* ╠══════════════════╬═══════════════════╣                             */
+/* ║ //////////////// ║                   ║                             */
+/* ║ // DOM 0 DATA // ║ PMP4 - RW - TOR   ║═══╗                         */
+/* ║ //////////////// ║                   ║   ║ TOR points here         */
+/* ╠══════════════════╬═══════════════════╣<══╝                         */
+/* ╚══════════════════╩═══════════════════╝  high address               */
+
+
+_dom0_code_start = 0x80003000;
+_dom1_code_start = 0x80004000;
+_dom1_data_start = 0x80005000;
+_dom0_data_start = 0x80006000;
+_dom2_data_start = 0x80007000;
+
+
 SECTIONS
 {
 
@@ -31,9 +67,27 @@ SECTIONS
   . = ALIGN(0x1000);
   .text : { *(.text) }
 
+  /* domain code start */
+  . = _dom0_code_start;
+  .text.dom0_code : { *(.text.dom0_code) }
+
+  . = _dom1_code_start;
+  .text.dom1_code : { *(.text.dom1_code) }
+
   /* data segment */
   . = ALIGN(0x100);
   .data : { *(.data) }
+
+  /* domain data start */
+  . = _dom1_data_start;
+  .data.dom1_data : { *(.data.dom1_data) }
+
+  . = _dom0_data_start;
+  .data.dom0_data : { *(.data.dom0_data) }
+
+  . = _dom2_data_start;
+  .data.dom2_data : { *(.data.dom2_data) }
+
 
   .sdata : {
     __global_pointer$ = . + 0x800;

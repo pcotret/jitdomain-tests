@@ -16,7 +16,7 @@ RISCV_PREFIX ?= $(RISCV)/bin/riscv$(XLEN)-unknown-elf-
 RISCV_GCC ?= $(RISCV_PREFIX)gcc
 RISCV_GCC_OPTS ?= -march=rv64g  -mabi=lp64d -DPREALLOCATE=1 -mcmodel=medany -static -std=gnu99 -O2 -ffast-math -fno-common -fno-builtin-printf
 RISCV_LINK_OPTS ?= -static -nostdlib -nostartfiles -lm -lgcc -T test.ld
-RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble --full-contents --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data
+RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble --full-contents --disassemble-zeroes --section=.text --section=.text.dom0_code --section=.text.dom1_code --section=.text.startup --section=.text.init --section=.data --section=.data.dom1_data --section=.data.dom2_data --section=.data.dom0_data
 
 MAX_CYCLES ?= 100000000
 
