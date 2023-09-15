@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sed "s/$1/$2/g" "$1_d0_d0.S" > "$2_d0_d0.S"
 sed "s/$1/$2/g" "$1_d0_d1.S" > "$2_d0_d1.S"
