@@ -1,9 +1,21 @@
-## PMPoke: Testing the PMP
+## Unit tests for JITDomain
 
 Small ASM test suite for the JITDomain instruction-level domain isolation
 
 
 ### Installation
+
+#### Custom toolchain
+
+The `riscv-gnu-toolchain` needs to be patched with our custom instructions. A patching script is given and runs the following steps:
+- Clone the [`riscv-gnu-toolchain`](https://github.com/riscv-collab/riscv-gnu-toolchain) repository 
+- Patch `binutils`
+- Patch `gdb`
+- Clean up the repository
+
+**Warning: Cloning and building the whole toolchain takes around 6.65Gb of disk and download space!!!** 
+
+#### Tests
 
 To build and run the different tests, a RISC-V toolchain installation is needed as well as a core Verilator emulator ([Rocket](https://github.com/chipsalliance/rocket-chip) or [CVA6](https://github.com/openhwgroup/cva6) for example):
 ```bash
