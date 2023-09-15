@@ -36,14 +36,23 @@ COMS_C=$(wildcard $(com_dir)/*.c)
 COMS_S=$(wildcard $(com_dir)/*.S)
 COMS_O=$(patsubst $(com_dir)/%.c,$(bin_dir)/%.o,$(COMS_C)) $(patsubst $(com_dir)/%.S,$(bin_dir)/%.o,$(COMS_S))
 
-
-ALL_S=$(wildcard $(src_dir)/*/*.S $(src_dir)/*/*/*.S)
-ALL_O=$(patsubst )
+ALL_CSR_ELF=$(patsubst $(csr_dir)/%.S,$(bin_dir)/%.elf,$ $(wildcard $(csr_dir)/*.S))
+ALL_DOMCHG_ELF=$(patsubst $(dom_chg_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dom_chg_dir)/*.S))
+ALL_BASE_MEM_ELF=$(patsubst $(base_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(base_mem_dir)/*.S))
+ALL_DUP_MEM_ELF=$(patsubst $(dup_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dup_mem_dir)/*.S))
+ALL_SS_MEM_ELF=$(patsubst $(ss_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(ss_mem_dir)/*.S))
+ALL_HELP_MEM_ELF=$(patsubst $(helper_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(helper_dir)/*.S))
+ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) $(ALL_SS_MEM_ELF) $(ALL_HELP_MEM_ELF)
+ALL_DUMP=$(patsubst $(bin_dir)/%.elf,$(bin_dir)/%.dump,$(ALL_ELF))
 
 # Check info
-# $(info COMS_O is $(COMS_O))
+$(info ALL_ELF is $(ALL_ELF))
 
-default: bin/template.dump
+
+default: all
+
+all: $(ALL_ELF)
+alldump: $(ALL_DUMP)
 
 # Headers!
 incs  += -I$(com_dir) -I$(inc_dir)
