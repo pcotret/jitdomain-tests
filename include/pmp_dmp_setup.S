@@ -158,12 +158,12 @@ pmp_setup:
     li t0, PMP_ADDR5
     srli t0, t0, 2     # Note: addr should be shifted by 2
     ori  t0, t0, 0x3f  # Note: napot range corresponds 0x3f=6 1s meaning 2**(6+3) bytes (512)
-    csrw pmpaddr1, t0
+    csrw pmpaddr5, t0
 
     # Setup PMP Region 6: Domain 0 Data pt2 (TOR)
-    li t0, PMP_ADDR1
+    li t0, PMP_ADDR6
     srli t0, t0, 2     # Note: addr should be shifted by 2
-    csrw pmpaddr1, t0
+    csrw pmpaddr6, t0
 
     # Setup PMP config 
     li t0, PMP_CONFIG

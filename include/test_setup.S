@@ -3,6 +3,8 @@
 # Note: pmp_setup expects to jump to a user-defined function named
 #       test_start once it switched to user-mode!
 
+.global main
+
 .section .text
 
 main:

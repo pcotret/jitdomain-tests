@@ -32,6 +32,8 @@
 
 .equiv MASK_MPP_USER_MODE, 0xffffe7ff
 
+.global main
+
 .section .text
 
 # Note: pmp_setup expects to jump to a user-defined function named
