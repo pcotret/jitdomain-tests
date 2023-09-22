@@ -90,7 +90,7 @@
 #   Locked Domain2 -| L 0 DOM | 
 
 # PMP Region 6: Domain 0 Data pt2 (TOR)
-.equiv PMP_ADDR6, 0x80007000
+.equiv PMP_ADDR6, 0x80020000
 # > PMPCFG6: 0x8b or 0b1_00_01_0_1_1
 #   Locked TOR RW  - | L 00 A  X W R |
 # > DMPCFG6: 0x8 or 0b1_0_00

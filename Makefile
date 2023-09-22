@@ -46,7 +46,7 @@ ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) 
 ALL_DUMP=$(patsubst $(bin_dir)/%.elf,$(bin_dir)/%.dump,$(ALL_ELF))
 
 # Check info
-$(info ALL_ELF is $(ALL_ELF))
+# $(info ALL_ELF is $(ALL_ELF))
 
 
 default: all

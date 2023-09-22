@@ -54,7 +54,7 @@ sed -i '/MATCH_SUBW, MASK_SUBW, match_opcode, 0 \},/ r patch/opcc.patch' riscv-g
 # Modified toolchain building
 msg "${GREEN}> Compiling toolchain${NOFORMAT}"
 cd riscv-gnu-toolchain
-./configure RISCV=/opt/riscv-newlib-jitdomain-test --enable-multilib
+./configure --prefix=/opt/riscv-newlib-jitdomain-test --enable-multilib
 sudo make
 # Removing the submodule
 msg "${RED}> Cleaning toolchain${NOFORMAT}"
