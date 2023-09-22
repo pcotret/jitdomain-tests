@@ -41,7 +41,7 @@
 # ╚══════════════════╩═══════════════════╝  high address
 #
 # From linker script:
-# _dom0_code_start = 0x80003000;
+# _dom0_code_start = 0x80000000;
 # _dom1_code_start = 0x80004000;
 # _dom1_data_start = 0x80005000;
 # _dom0_data_start = 0x80006000;
@@ -49,10 +49,12 @@
 
 # PMP Region 0: Domain 0 Code pt1 (TOR)
 .equiv PMP_ADDR0, 0x80004000
-# > PMPCFG0: 0x8d or 0b1_00_01_1_0_1
-#   Locked TOR RX  - | L 00 A  X W R |
+# > PMPCFG0: 0x8d or 0b1_00_01_1_1_1
+#   Locked TOR RWX - | L 00 A  X W R |
 # > DMPCFG0: 0x8 or 0b1_0_00
 #   Locked Domain0 -| L 0 DOM | 
+# Note: needs RWX because tohost is at address 080001000
+# Note2: not properly working when moving it into data0
 
 # PMP Region 1: Domain 1 Code (NAPOT)
 .equiv PMP_ADDR1, 0x80004000
@@ -90,14 +92,14 @@
 #   Locked Domain2 -| L 0 DOM | 
 
 # PMP Region 6: Domain 0 Data pt2 (TOR)
-.equiv PMP_ADDR6, 0x80020000
+.equiv PMP_ADDR6, 0x80100000
 # > PMPCFG6: 0x8b or 0b1_00_01_0_1_1
 #   Locked TOR RW  - | L 00 A  X W R |
 # > DMPCFG6: 0x8 or 0b1_0_00
 #   Locked Domain0 -| L 0 DOM | 
 
 # Concatenation of the pmpcfg:
-.equiv PMP_CONFIG, 0x008b9b8b8d9b9d8d
+.equiv PMP_CONFIG, 0x008b9b8b8d9b9d8f
 .equiv DMP_CONFIG, 0x0000000008a88998
 
 .equiv MASK_MPP_USER_MODE, 0xffffe7ff
