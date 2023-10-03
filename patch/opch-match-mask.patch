@@ -21,10 +21,10 @@
 #define MATCH_SW1 0x202b
 #define MASK_SD1  0x707f
 #define MATCH_SD1 0x302b
-#define MASK_CHDOM  0x707f
-#define MATCH_CHDOM 0x502b
-#define MASK_RETDOM  0x707f
-#define MATCH_RETDOM 0x402b
+#define MASK_CHDOM  0xffffffff
+#define MATCH_CHDOM 0x0003105b
+#define MASK_RETDOM  0xffffffff
+#define MATCH_RETDOM 0x0000805b
 #define MASK_SST  0x707f
 #define MATCH_SST 0x702b
 #define MASK_LST  0x707f

@@ -49,7 +49,7 @@
 
 # PMP Region 0: Domain 0 Code pt1 (TOR)
 #define PMP_ADDR0 0x80004000
-# > PMPCFG0: 0x8d or 0b1_00_01_1_1_1
+# > PMPCFG0: 0x8f or 0b1_00_01_1_1_1
 #   Locked TOR RWX - | L 00 A  X W R |
 # > DMPCFG0: 0x8 or 0b1_0_00
 #   Locked Domain0 -| L 0 DOM | 
@@ -101,6 +101,9 @@
 # Concatenation of the pmpcfg/dmpcfg:
 #define PMP_CONFIG 0x008b9b8b8d9b9d8f
 #define DMP_CONFIG 0x0000000008a88998
+# Unlocked version
+# #define PMP_CONFIG 0x000b1b0b0d1b1d0f
+# #define DMP_CONFIG 0x0000000000200110
 
 # All inclusive, no locks
 # | L 00 A  X W R | PMPCFG
