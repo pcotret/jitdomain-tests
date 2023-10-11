@@ -5,17 +5,16 @@ endif
 
 
 # Directories
-src_dir = src
+tst_dir = tests
 com_dir = common
 inc_dir = include
 bin_dir = bin
 
-csr_dir = $(src_dir)/csr
-dom_chg_dir = $(src_dir)/domain-change
-base_mem_dir = $(src_dir)/mem-access/base
-dup_mem_dir = $(src_dir)/mem-access/duplicated
-ss_mem_dir = $(src_dir)/mem-access/shadow-stack
-helper_dir = $(src_dir)/helpers
+csr_dir = $(tst_dir)/csr
+dom_chg_dir = $(tst_dir)/domain-change
+base_mem_dir = $(tst_dir)/mem-access/base
+dup_mem_dir = $(tst_dir)/mem-access/duplicated
+ss_mem_dir = $(tst_dir)/mem-access/shadow-stack
 
 # Specify flags
 XLEN ?= 64
@@ -41,8 +40,7 @@ ALL_DOMCHG_ELF=$(patsubst $(dom_chg_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dom_c
 ALL_BASE_MEM_ELF=$(patsubst $(base_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(base_mem_dir)/*.S))
 ALL_DUP_MEM_ELF=$(patsubst $(dup_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dup_mem_dir)/*.S))
 ALL_SS_MEM_ELF=$(patsubst $(ss_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(ss_mem_dir)/*.S))
-ALL_HELP_MEM_ELF=$(patsubst $(helper_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(helper_dir)/*.S))
-ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) $(ALL_SS_MEM_ELF) $(ALL_HELP_MEM_ELF)
+ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) $(ALL_SS_MEM_ELF)
 ALL_DUMP=$(patsubst $(bin_dir)/%.elf,$(bin_dir)/%.dump,$(ALL_ELF))
 
 # Check info
@@ -83,9 +81,6 @@ bin/%.o: $(dup_mem_dir)/%.S
 bin/%.o: $(ss_mem_dir)/%.S
 	$(rv-gcc)
 
-bin/%.o: $(helper_dir)/%.S
-	$(rv-gcc)
-
 # Link all the object files, add the corresponding line for 
 # everything otherwise it removes intermediate files......................
 bin/%.elf: $(COMS_O) $(bin_dir)/%.o
@@ -111,7 +106,7 @@ bin/%.corelog: $(bin_dir)/%.elf emudef
 bin/%.vcd: $(bin_dir)/%.elf emudef
 	$(EMULATOR) +max-cycles=$(MAX_CYCLES) +verbose -v $@ $< 2>&1 | \
 	$(RISCV)/bin/spike-dasm > bin/out.corelog
-		gtkwave $@ -S $(src_dir)/gtkwave_config/config.tcl -r $(src_dir)/gtkwave_config/.gtkwaverc
+		gtkwave $@ -S $(tst_dir)/gtkwave_config/config.tcl -r $(tst_dir)/gtkwave_config/.gtkwaverc
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
