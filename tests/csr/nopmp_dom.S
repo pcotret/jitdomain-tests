@@ -5,7 +5,9 @@
 # Test Description :
 # \__________________
 #
-# Failing PMP and passing DMP should fail
+# PMP:     Failing
+# DMP:     Passing
+# Should:  Fail
 # 
 
 .section .text.dom0_code

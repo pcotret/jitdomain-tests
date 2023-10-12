@@ -7,7 +7,7 @@
 #
 # Executes in: domain 1
 # Accesses:    domain 2
-# Shousd:      pass
+# Should:      pass
 # 
 # Shadow stack loads/stores SHOULD access
 # domain 2 data from domain 1!
