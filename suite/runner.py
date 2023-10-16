@@ -63,9 +63,7 @@ def default_run_file() -> str:
     runs.sort(reverse=True)
     if runs:
         return runs[0]
-    raise MissingRunResultsFile(
-        "No run results found, expecting one as results/*-run/run-results.json."
-    )
+    return ""
 
 
 def check_envs() -> None:
@@ -267,6 +265,11 @@ class Runner:
         # 0. Take the most recent run by default
         if run_file is None:
             run_file = default_run_file()
+        if run_file == "":
+            raise MissingRunResultsFile(
+                "No run results found, expecting one as"
+                " results/*-run/run-results.json."
+            )
         with open(run_file, "r") as collect_data:
             test_structs: List[TestData] = json.load(collect_data)
 

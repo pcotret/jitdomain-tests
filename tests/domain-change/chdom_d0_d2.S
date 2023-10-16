@@ -17,14 +17,11 @@
 .section .text.dom0_code
 
 test_start:
-    /* Jump to domain 0 */
+    /* Load the address of the domain 2 code (non existent so data) */
     addi sp, sp, -8
     sd ra, 8(sp)
-    la t1, test_start_dom2
+    la t1, data_region2
     chdom
     ld ra, 8(sp)
     addi sp, sp, 8
     ret
-
-test_start_dom2:
-    retdom

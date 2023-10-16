@@ -17,9 +17,13 @@
 .section .text.dom0_code
 
 test_start:
-    /* Jump to domain 0 */
+    /* Load the address of the test in dom0 */
+    addi sp, sp, -8
+    sd ra, 8(sp)
     la t1, test_landing_dom0
     chdom
+    ld ra, 8(sp)
+    addi sp, sp, 8
     ret
 
 test_landing_dom0:
