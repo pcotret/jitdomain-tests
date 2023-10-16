@@ -11,6 +11,7 @@ from suite.data import RunResult, TestData, TestResult, default_test_data
 from suite.exceptions import (
     EnvironmentException,
     ExpectedTestResultNotFound,
+    MissingRunResultsFile,
     UnknownTestResult,
 )
 
@@ -55,6 +56,16 @@ def glob_s_files(paths: List[str]) -> List[str]:
     for path in paths:
         s_files.extend(glob.glob(f"{path}/*.S"))
     return s_files
+
+
+def default_run_file() -> str:
+    runs: List[str] = glob.glob(f"{RES_DIR}/*-run/run-results.json")
+    runs.sort(reverse=True)
+    if runs:
+        return runs[0]
+    raise MissingRunResultsFile(
+        "No run results found, expecting one as results/*-run/run-results.json."
+    )
 
 
 def check_envs() -> None:
@@ -108,9 +119,6 @@ def define_test_res(expected: RunResult, actual: RunResult) -> TestResult:
 
 
 class Runner:
-    # Helpers
-    # \_________
-
     # Collection
     # \___________
 
@@ -166,7 +174,7 @@ class Runner:
     # Test runs
     # \__________
 
-    def run(self, conf_file: str = f"{RES_DIR}/collect.json") -> List[TestData]:
+    def launch(self, conf_file: str = f"{RES_DIR}/collect.json") -> List[TestData]:
         # 1. Environment check
         # TODO: LOGGER
         print("[R] Checking environment variables...")
@@ -248,9 +256,7 @@ class Runner:
         # 5. Output the json
         # TODO: Logger
         print("[R] - Writing test suite result...")
-        with open(
-            f"{RES_DIR}/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}-run.json", "w"
-        ) as outfile:
+        with open(f"{run_dir_name}/run-results.json", "w") as outfile:
             json.dump(test_structs, outfile, indent=2, separators=(",", ": "))
 
         return test_structs
@@ -260,9 +266,7 @@ class Runner:
     ) -> Dict[str, Dict[Union[str, TestResult], int]]:
         # 0. Take the most recent run by default
         if run_file is None:
-            runs: List[str] = glob.glob(f"{RES_DIR}/*-run.json")
-            runs.sort(reverse=True)
-            run_file = runs[0]
+            run_file = default_run_file()
         with open(run_file, "r") as collect_data:
             test_structs: List[TestData] = json.load(collect_data)
 
@@ -309,6 +313,6 @@ class Runner:
 
 if __name__ == "__main__":
     runner = Runner()
-    runner.collect()
-    runner.run()
+    runner.collect("domain")
+    runner.launch()
     runner.report()

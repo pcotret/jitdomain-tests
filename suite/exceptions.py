@@ -21,3 +21,11 @@ class EnvironmentException(Exception):
     """
 
     pass
+
+
+class MissingRunResultsFile(Exception):
+    """
+    Raised when the run file to report on is missing.
+    """
+
+    pass
