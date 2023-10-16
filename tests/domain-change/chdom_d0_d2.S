@@ -18,8 +18,12 @@
 
 test_start:
     /* Jump to domain 0 */
+    addi sp, sp, -8
+    sd ra, 8(sp)
     la t1, test_start_dom2
     chdom
+    ld ra, 8(sp)
+    addi sp, sp, 8
     ret
 
 test_start_dom2:
