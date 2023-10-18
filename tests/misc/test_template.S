@@ -68,6 +68,8 @@
 
 test_start:
     la t1, test_start_dom1
+    auipc ra, 0
+    addi  ra, ra, 12
     chdom
     ret
 

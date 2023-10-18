@@ -21,6 +21,8 @@ test_start:
     addi sp, sp, -8
     sd ra, 8(sp)
     la t1, test_landing_dom0
+    auipc ra, 0
+    addi  ra, ra, 12
     chdom
     ld ra, 8(sp)
     addi sp, sp, 8

@@ -5,12 +5,12 @@
 # Test Description :
 # \__________________
 #
-# Executes in: domain 1
-# Accesses:    domain 0
+# Executes in: domain 0
+# Accesses:    domain 1
 # Should:      fail
 # 
-# Base loads/stores should NOT access domain 0
-# data from domain 1 (data error)
+# Executing a duplicated load RIGHT AFTER a domain return should
+# fail, implying the flush for the current domain was performed
 #
 
 
@@ -24,6 +24,7 @@ test_start:
     auipc ra, 0
     addi  ra, ra, 12
     chdom
+    lb1 t2, 40(t3)
     ld ra, 8(sp)
     addi sp, sp, 8
     ret
@@ -31,7 +32,7 @@ test_start:
 .section .text.dom1_code
 
 test_start_dom1:
-    /* Load the address of the domain 0 data */
-    la  t1, data_region0
-    lhu1 t2, 40(t1)
+    addi t1, t1, 1         # Pass time for curdom pipeline propagation
+    addi t1, t1, -1        # (in case of)
+    la t3, data_region1    # Preload address for lb1
     retdom

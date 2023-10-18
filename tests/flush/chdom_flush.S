@@ -5,12 +5,12 @@
 # Test Description :
 # \__________________
 #
-# Executes in: domain 1
-# Accesses:    domain 0
-# Should:      fail
+# Executes in: domain 0
+# Accesses:    domain 1
+# Should:      pass
 # 
-# Base loads/stores should NOT access domain 0
-# data from domain 1 (data error)
+# Executing a duplicated load RIGHT AFTER a change domain should
+# work, implying the flush for the current domain was performed
 #
 
 
@@ -20,6 +20,7 @@ test_start:
     /* Jump to domain 1 */
     addi sp, sp, -8
     sd ra, 8(sp)
+    la t3, data_region1    # Preload address for lb1
     la t1, test_start_dom1
     auipc ra, 0
     addi  ra, ra, 12
@@ -31,7 +32,5 @@ test_start:
 .section .text.dom1_code
 
 test_start_dom1:
-    /* Load the address of the domain 0 data */
-    la  t1, data_region0
-    lhu1 t2, 40(t1)
+    lb1 t2, 40(t3)
     retdom
