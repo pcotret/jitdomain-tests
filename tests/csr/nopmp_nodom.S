@@ -1,19 +1,31 @@
-#include "test_setup.S"
+#include "csr_test_setup.S"
 
 .section .text
 
 # Test Description :
 # \__________________
 #
-# PMP:     Failing
-# DMP:     Failing
+# PMP:     Failing > Data region read-only
+# DMP:     Failing > Wrong domain
 # Should:  Fail
 # 
 
 .section .text.dom0_code
 
 test_start:
-    /* Load the address of the domain 1 data */
-    li  t1, 0x80004000
-    lb  t2, 40(t1)
+    /* Jump to domain 1 */
+    addi sp, sp, -8
+    sd ra, 8(sp)
+    la t1, test_start_dom1
+    chdom
+    ld ra, 8(sp)
+    addi sp, sp, 8
     ret
+
+.section .text.dom1_code
+
+test_start_dom1:
+    /* Load the address of the domain 0 data */
+    la  t1, data_region0
+    sb1 t2, 40(t1)  # Wrong data domain and wrong pmp rights
+    retdom
