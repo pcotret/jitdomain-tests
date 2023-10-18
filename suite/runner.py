@@ -23,6 +23,7 @@ DUP_MEM_ACCESS_TESTS: str = f"{TEST_DIR}/mem-access/duplicated/"
 SS_MEM_ACCESS_TESTS: str = f"{TEST_DIR}/mem-access/shadow-stack/"
 DOMAIN_CHANGE_TESTS: str = f"{TEST_DIR}/domain-change/"
 CSR_TESTS: str = f"{TEST_DIR}/csr/"
+SYSCALLS_TESTS: str = f"{TEST_DIR}/syscall/"
 
 ALL_TESTS: List[str] = [
     BASE_MEM_ACCESS_TESTS,
@@ -30,6 +31,7 @@ ALL_TESTS: List[str] = [
     SS_MEM_ACCESS_TESTS,
     DOMAIN_CHANGE_TESTS,
     CSR_TESTS,
+    SYSCALLS_TESTS,
 ]
 
 # ANSI escape codes for text colors
@@ -44,6 +46,11 @@ TEST_RESULT_NAMES: Dict[TestResult, str] = {
     TestResult.EXP_SUCCESS: f"{GREEN}Expected success{RESET}",
     TestResult.FAILURE: f"{ORANGE}Failure{RESET}",
     TestResult.ERROR: f"{RED}Error{RESET}",
+}
+
+RUN_RESULT_NAMES: Dict[RunResult, str] = {
+    RunResult.FAILURE: "failure",
+    RunResult.SUCCESS: "success",
 }
 
 # Helpers
@@ -242,7 +249,15 @@ class Runner:
             test_result: TestResult = define_test_res(
                 expected=test_struct["expected"], actual=test_struct["run"]
             )
-            print(f"[R] - Test run complete: {TEST_RESULT_NAMES[test_result]}...")
+
+            report: str = f"[R] - Test run complete: {TEST_RESULT_NAMES[test_result]}"
+            if test_result == TestResult.FAILURE:
+                report += (
+                    f" (expected a {RUN_RESULT_NAMES[test_struct['expected']]} got a"
+                    f" {RUN_RESULT_NAMES[test_struct['run']]})"
+                )
+
+            print(report)
             test_struct["result"] = test_result
 
             # 4.4 Copy the logfile
@@ -267,8 +282,7 @@ class Runner:
             run_file = default_run_file()
         if run_file == "":
             raise MissingRunResultsFile(
-                "No run results found, expecting one as"
-                " results/*-run/run-results.json."
+                "No run results found, expecting one as results/*-run/run-results.json."
             )
         with open(run_file, "r") as collect_data:
             test_structs: List[TestData] = json.load(collect_data)

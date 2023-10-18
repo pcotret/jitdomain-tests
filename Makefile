@@ -11,6 +11,7 @@ inc_dir = include
 bin_dir = bin
 
 csr_dir = $(tst_dir)/csr
+syscall_dir = $(tst_dir)/syscall
 dom_chg_dir = $(tst_dir)/domain-change
 base_mem_dir = $(tst_dir)/mem-access/base
 dup_mem_dir = $(tst_dir)/mem-access/duplicated
@@ -36,11 +37,12 @@ COMS_S=$(wildcard $(com_dir)/*.S)
 COMS_O=$(patsubst $(com_dir)/%.c,$(bin_dir)/%.o,$(COMS_C)) $(patsubst $(com_dir)/%.S,$(bin_dir)/%.o,$(COMS_S))
 
 ALL_CSR_ELF=$(patsubst $(csr_dir)/%.S,$(bin_dir)/%.elf,$ $(wildcard $(csr_dir)/*.S))
+ALL_SYSCALL_ELF=$(patsubst $(syscall_dir)/%.S,$(bin_dir)/%.elf,$ $(wildcard $(syscall_dir)/*.S))
 ALL_DOMCHG_ELF=$(patsubst $(dom_chg_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dom_chg_dir)/*.S))
 ALL_BASE_MEM_ELF=$(patsubst $(base_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(base_mem_dir)/*.S))
 ALL_DUP_MEM_ELF=$(patsubst $(dup_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(dup_mem_dir)/*.S))
 ALL_SS_MEM_ELF=$(patsubst $(ss_mem_dir)/%.S,$(bin_dir)/%.elf,$(wildcard $(ss_mem_dir)/*.S))
-ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) $(ALL_SS_MEM_ELF)
+ALL_ELF=$(ALL_CSR_ELF) $(ALL_DOMCHG_ELF) $(ALL_BASE_MEM_ELF) $(ALL_DUP_MEM_ELF) $(ALL_SS_MEM_ELF) $(ALL_SYSCALL_ELF)
 ALL_DUMP=$(patsubst $(bin_dir)/%.elf,$(bin_dir)/%.dump,$(ALL_ELF))
 
 # Check info
@@ -67,6 +69,9 @@ bin/%.o: $(com_dir)/%.S
 	$(rv-gcc)
 
 bin/%.o: $(csr_dir)/%.S
+	$(rv-gcc)
+
+bin/%.o: $(syscall_dir)/%.S
 	$(rv-gcc)
 
 bin/%.o: $(dom_chg_dir)/%.S
