@@ -7,7 +7,7 @@ Small ASM test suite for the JITDomain instruction-level domain isolation.
 
 #### Custom toolchain
 
-The `riscv-gnu-toolchain` needs to be patched with our custom instructions. A patching script is given and runs the following steps:
+The `riscv-gnu-toolchain` needs to be patched with our custom instructions. A patching script is given ([patch_toolchain.sh](https://github.com/QDucasse/jitdomain-tests/blob/main/patch/patch_toolchain.sh)) and runs the following steps:
 - Clone the [`riscv-gnu-toolchain`](https://github.com/riscv-collab/riscv-gnu-toolchain) repository 
 - Patch `binutils`
 - Patch `gdb`
