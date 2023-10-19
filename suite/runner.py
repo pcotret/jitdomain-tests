@@ -24,6 +24,7 @@ SS_MEM_ACCESS_TESTS: str = f"{TEST_DIR}/mem-access/shadow-stack/"
 DOMAIN_CHANGE_TESTS: str = f"{TEST_DIR}/domain-change/"
 CSR_TESTS: str = f"{TEST_DIR}/csr/"
 SYSCALLS_TESTS: str = f"{TEST_DIR}/syscall/"
+FLUSH_TESTS: str = f"{TEST_DIR}/flush/"
 
 ALL_TESTS: List[str] = [
     BASE_MEM_ACCESS_TESTS,
@@ -32,6 +33,7 @@ ALL_TESTS: List[str] = [
     DOMAIN_CHANGE_TESTS,
     CSR_TESTS,
     SYSCALLS_TESTS,
+    FLUSH_TESTS,
 ]
 
 # ANSI escape codes for text colors
@@ -326,10 +328,3 @@ class Runner:
             )
 
         return suite_counter
-
-
-if __name__ == "__main__":
-    runner = Runner()
-    runner.collect("domain")
-    runner.launch()
-    runner.report()
