@@ -59,7 +59,7 @@ sudo make
 # Removing the submodule
 msg "${RED}> Cleaning toolchain${NOFORMAT}"
 cd ..
-rm -rf riscv-gnu-toolchain/*
+sudo rm -rf riscv-gnu-toolchain/*
 git submodule deinit -f riscv-gnu-toolchain
 
 msg "${GREEN}> Toolchain patched!!${NOFORMAT}"
