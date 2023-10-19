@@ -62,4 +62,4 @@ cd ..
 sudo rm -rf riscv-gnu-toolchain/*
 git submodule deinit -f riscv-gnu-toolchain
 
-msg "${GREEEN}> Toolchain patched!!${NOFORMAT}"
+msg "${GREEN}> Toolchain patched!!${NOFORMAT}"
