@@ -25,6 +25,7 @@ DOMAIN_CHANGE_TESTS: str = f"{TEST_DIR}/domain-change/"
 CSR_TESTS: str = f"{TEST_DIR}/csr/"
 SYSCALLS_TESTS: str = f"{TEST_DIR}/syscall/"
 FLUSH_TESTS: str = f"{TEST_DIR}/flush/"
+CONTROL_FLOW_TESTS: str = f"{TEST_DIR}/control-flow/"
 
 ALL_TESTS: List[str] = [
     BASE_MEM_ACCESS_TESTS,
@@ -34,6 +35,7 @@ ALL_TESTS: List[str] = [
     CSR_TESTS,
     SYSCALLS_TESTS,
     FLUSH_TESTS,
+    CONTROL_FLOW_TESTS,
 ]
 
 # ANSI escape codes for text colors

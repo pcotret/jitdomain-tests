@@ -56,10 +56,11 @@ msg "${GREEN}> Compiling toolchain${NOFORMAT}"
 cd riscv-gnu-toolchain
 ./configure --prefix=/opt/riscv-newlib-jitdomain-test --enable-multilib
 sudo make
-# Removing the submodule
-msg "${RED}> Cleaning toolchain${NOFORMAT}"
-cd ..
-sudo rm -rf riscv-gnu-toolchain/*
-git submodule deinit -f riscv-gnu-toolchain
-
 msg "${GREEN}> Toolchain patched!!${NOFORMAT}"
+
+# Removing the submodule
+msg "${ORANGE}> To remove the toolchain sources run the following:${NOFORMAT}"
+msg "> cd .."
+msg "> sudo rm -rf riscv-gnu-toolchain/*"
+msg "> git submodule deinit -f riscv-gnu-toolchain"
+
