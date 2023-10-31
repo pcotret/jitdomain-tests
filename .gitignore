@@ -3,7 +3,7 @@
 
 bin/*
 !/bin/.gitkeep
-results/*
+results/*.corelog
 !results/.gitkeep
 
 # CVA6
