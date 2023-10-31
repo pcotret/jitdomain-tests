@@ -11,15 +11,15 @@ ERROR = 4  # Error in the run
 | ret_d1_d0    | control-flow/            | 2        | 1   | 3      |
 | nopmp_dom    | csr/                     | 2        | 2   | 2      |
 | nopmp_nodom  | csr/                     | 2        | 2   | 2      |
-| pmp_dom      | csr/                     | 1        | 1   | 1      |
+| pmp_dom      | csr/                     | :white_check_mark:        | :white_check_mark:   | 1      |
 | pmp_nodom    | csr/                     | 2        | 2   | 2      |
 | chdom_d0_d0  | domain-change/           | 2        | 1   | 3      |
-| chdom_d0_d1  | domain-change/           | 1        | 1   | 1      |
+| chdom_d0_d1  | domain-change/           | :white_check_mark:        | :white_check_mark:   | 1      |
 | chdom_d0_d2  | domain-change/           | 2        | 2   | 2      |
 | chdom_d1_d0  | domain-change/           | 2        | 2   | 2      |
 | chdom_d1_d1  | domain-change/           | 2        | 2   | 2      |
 | chdom_d1_d2  | domain-change/           | 2        | 2   | 2      |
-| chdom_flush  | flush/                   | 1        | 1   | 1      |
+| chdom_flush  | flush/                   | :white_check_mark:        | :white_check_mark:  | 1      |
 | retdom_flush | flush/                   | 2        | 2   | 2      |
 | lb_d0_d1     | mem-access/base/         | 2        | 2   | 2      |
 | lb_d0_d2     | mem-access/base/         | 2        | 2   | 2      |
@@ -41,8 +41,8 @@ ERROR = 4  # Error in the run
 | lhu_d0_d2    | mem-access/base/         | 2        | 2   | 2      |
 | lhu_d1_d1    | mem-access/base/         | 2        | 2   | 2      |
 | lhu_d1_d2    | mem-access/base/         | 2        | 2   | 2      |
-| lstar_d0_d0  | mem-access/base/         | 1        | 1   | 1      |
-| lstar_d1_d0  | mem-access/base/         | 1        | 1   | 1      |
+| lstar_d0_d0  | mem-access/base/         | :white_check_mark:        | :white_check_mark:   | 1      |
+| lstar_d1_d0  | mem-access/base/         | :white_check_mark:        | :white_check_mark:   | 1      |
 | lw_d0_d1     | mem-access/base/         | 2        | 2   | 2      |
 | lw_d0_d2     | mem-access/base/         | 2        | 2   | 2      |
 | lw_d1_d1     | mem-access/base/         | 2        | 2   | 2      |
@@ -63,8 +63,8 @@ ERROR = 4  # Error in the run
 | sh_d0_d2     | mem-access/base/         | 2        | 2   | 2      |
 | sh_d1_d1     | mem-access/base/         | 2        | 2   | 2      |
 | sh_d1_d2     | mem-access/base/         | 2        | 2   | 2      |
-| sstar_d0_d0  | mem-access/base/         | 1        | 1   | 1      |
-| sstar_d1_d0  | mem-access/base/         | 1        | 1   | 1      |
+| sstar_d0_d0  | mem-access/base/         | :white_check_mark:        | :white_check_mark:   | 1      |
+| sstar_d1_d0  | mem-access/base/         | :white_check_mark:        | :white_check_mark:   | 1      |
 | sw_d0_d1     | mem-access/base/         | 2        | 2   | 2      |
 | sw_d0_d2     | mem-access/base/         | 2        | 2   | 2      |
 | sw_d1_d1     | mem-access/base/         | 2        | 2   | 2      |
@@ -94,7 +94,7 @@ ERROR = 4  # Error in the run
 | lhu1_d0_d2   | mem-access/duplicated/   | 2        | 2   | 2      |
 | lhu1_d1_d0   | mem-access/duplicated/   | 2        | 2   | 2      |
 | lhu1_d1_d2   | mem-access/duplicated/   | 2        | 2   | 2      |
-| lstar1_d1_d1 | mem-access/duplicated/   | 1        | 1   | 1      |
+| lstar1_d1_d1 | mem-access/duplicated/   | :white_check_mark:        | :white_check_mark:   | 1      |
 | lw1_d0_d0    | mem-access/duplicated/   | 2        | 2   | 2      |
 | lw1_d0_d1    | mem-access/duplicated/   | 2        | 2   | 2      |
 | lw1_d0_d2    | mem-access/duplicated/   | 2        | 2   | 2      |
@@ -120,7 +120,7 @@ ERROR = 4  # Error in the run
 | sh1_d0_d2    | mem-access/duplicated/   | 2        | 2   | 2      |
 | sh1_d1_d0    | mem-access/duplicated/   | 2        | 2   | 2      |
 | sh1_d1_d2    | mem-access/duplicated/   | 2        | 2   | 2      |
-| sstar1_d1_d1 | mem-access/duplicated/   | 1        | 1   | 1      |
+| sstar1_d1_d1 | mem-access/duplicated/   | :white_check_mark:        | :white_check_mark:   | 1      |
 | sw1_d0_d0    | mem-access/duplicated/   | 2        | 2   | 2      |
 | sw1_d0_d1    | mem-access/duplicated/   | 2        | 2   | 2      |
 | sw1_d0_d2    | mem-access/duplicated/   | 2        | 2   | 2      |
@@ -131,7 +131,7 @@ ERROR = 4  # Error in the run
 | lst_d0_d2    | mem-access/shadow-stack/ | 2        | 2   | 2      |
 | lst_d1_d0    | mem-access/shadow-stack/ | 2        | 2   | 2      |
 | lst_d1_d1    | mem-access/shadow-stack/ | 2        | 2   | 2      |
-| lst_d1_d2    | mem-access/shadow-stack/ | 1        | 1   | 1      |
+| lst_d1_d2    | mem-access/shadow-stack/ | :white_check_mark:        | :white_check_mark:   | 1      |
 | sst_d0_d0    | mem-access/shadow-stack/ | 2        | 2   | 2      |
 | sst_d0_d1    | mem-access/shadow-stack/ | 2        | 2   | 2      |
 | sst_d0_d2    | mem-access/shadow-stack/ | 2        | 2   | 2      |
