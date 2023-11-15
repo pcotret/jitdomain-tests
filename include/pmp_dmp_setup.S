@@ -106,8 +106,8 @@
 # #define PMP_CONFIG 0x008b9b8b8d9b9d8f
 # #define DMP_CONFIG 0x0000000008a88998
 # Unlocked version
-#define PMP_CONFIG 0x000b1b0b0d1b1d0f
-#define DMP_CONFIG 0x0000000000200110
+# #define PMP_CONFIG 0x000b1b0b0d1b1d0f
+# #define DMP_CONFIG 0x0000000000200110
 
 # All inclusive, no locks
 # | L 00 A  X W R | PMPCFG
