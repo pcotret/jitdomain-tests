@@ -216,7 +216,7 @@ class Runner:
                         f"{core_path}/work-ver/Variane_testharness",
                         f"bin/{test_struct['name']}.elf",
                     ],
-                    timeout=200,
+                    timeout=180,
                     check=True,
                     text=True,
                     stdout=subprocess.PIPE,
@@ -300,14 +300,18 @@ class Runner:
             TestResult.ERROR: 0,
         }
 
+        failing_tests: List[TestData] = []
         # 1. For each group
         for test_struct in test_structs:
             # 1.1 Check if the group already exists
             group = test_struct["group"]
             test_result = test_struct["result"]
+            test_struct["name"]
             if suite_counter.get(group) is None:
                 suite_counter[group] = default_val.copy()
             suite_counter[group][test_result] += 1
+            if test_result >= 3:  # Failure or Error
+                failing_tests += [test_struct]
             suite_counter[group]["total"] += 1
 
         # 2. Display results
@@ -329,4 +333,33 @@ class Runner:
                 f"{RED}   {stats[TestResult.ERROR]} errors{RESET}\n"
             )
 
+        # 3. Regroup failed tests
+        if failing_tests:
+            # 3.1 Create directory
+            log_dir: str = os.path.dirname(run_file)
+            if not os.path.exists(f"{log_dir}/failed_tests"):
+                os.mkdir(f"{log_dir}/failed_tests")
+
+            # 3.2 Disassemble log and print name
+            print("Failed Tests:")
+            for failed_test in failing_tests:
+                test_name = failed_test["name"]
+                test_group = failed_test["group"]
+                print(f"{ORANGE}   {test_group}/{test_name}{RESET}")
+                try:
+                    subprocess.run(
+                        ["spike-dasm"],
+                        stdin=open(f"{log_dir}/{test_name}.corelog", "r"),
+                        stdout=open(f"{log_dir}/failed_tests/{test_name}.dasm", "w"),
+                        timeout=10,
+                        check=True,
+                        text=True,
+                    )
+                except (
+                    FileNotFoundError,
+                    subprocess.CalledProcessError,
+                    subprocess.TimeoutExpired,
+                ):
+                    raise
+            print(f"Failed tests disassembly are located in '{log_dir}/failed_tests'")
         return suite_counter

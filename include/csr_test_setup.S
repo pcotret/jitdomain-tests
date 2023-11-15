@@ -63,7 +63,15 @@
 #   Locked Domain0 -| L 0 DOM | 
 
 # Concatenation of the pmpcfg:
-#define PMP_CONFIG 0x0000008b99999c8f
+# Fully locked version
+# #define PMP_CONFIG 0x0000008b99999c8f
+# #define DMP_CONFIG 0x0000000000088998
+# Unlocked
+# #define PMP_CONFIG 0x0000000b19191c0f
+# #define DMP_CONFIG 0x0000000000000110
+
+# Locking only dom1, locking all dmps
+#define PMP_CONFIG 0x0000000b19999c0f
 #define DMP_CONFIG 0x0000000000088998
 
 #define MASK_MPP_USER_MODE 0xffffe7ff
