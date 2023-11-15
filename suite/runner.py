@@ -70,7 +70,7 @@ def glob_s_files(paths: List[str]) -> List[str]:
 
 
 def default_run_file() -> str:
-    runs: List[str] = glob.glob(f"{RES_DIR}/*-run/run-results.json")
+    runs: List[str] = glob.glob(f"{RES_DIR}/*/run-results.json")
     runs.sort(reverse=True)
     if runs:
         return runs[0]
@@ -345,7 +345,7 @@ class Runner:
             for failed_test in failing_tests:
                 test_name = failed_test["name"]
                 test_group = failed_test["group"]
-                print(f"{ORANGE}   {test_group}/{test_name}{RESET}")
+                print(f"{ORANGE}   {test_group}{test_name}{RESET}")
                 try:
                     subprocess.run(
                         ["spike-dasm"],
