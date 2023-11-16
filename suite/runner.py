@@ -4,12 +4,12 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
 from suite.data import RunResult, TestData, TestResult, default_test_data
 from suite.exceptions import (
-    EnvironmentException,
     ExpectedTestResultNotFound,
     MissingRunResultsFile,
     UnknownTestResult,
@@ -79,17 +79,26 @@ def default_run_file() -> str:
 
 def check_envs() -> None:
     if "RISCV" not in os.environ:
-        raise EnvironmentException(
+        print(
             "RISCV environment variable is not set. Please define it "
             "to point to your installed toolchain location "
             "(i.e. export RISCV=path/to/your/toolchain)"
         )
+        sys.exit(1)
     if "CORE" not in os.environ:
-        raise EnvironmentException(
+        print(
             "CORE environment variable is not set. Please define it "
             "to point to the root of the used processor "
             "(i.e. export CORE=path/to/cva6)"
         )
+        sys.exit(1)
+    # TODO:
+    # if "SPIKE_DASM" not in os.environ:
+    #     print(
+    #         "CORE environment variable is not set. Please define it "
+    #         "to point to the root of the used processor "
+    #         "(i.e. export CORE=path/to/cva6)"
+    #     )
 
 
 def cleanup_build() -> None:
@@ -133,7 +142,7 @@ class Runner:
 
     def collect(
         self, group: str = "tests", out: str = f"{RES_DIR}/collect.json"
-    ) -> List[TestData]:
+    ) -> str:
         test_structs: List[TestData] = []
         # 1. Collect targetted .S files
         # TODO: LOGGER
@@ -178,12 +187,12 @@ class Runner:
         with open(out, "w") as outfile:
             json.dump(test_structs, outfile, indent=2, separators=(",", ": "))
 
-        return test_structs
+        return out
 
     # Test runs
     # \__________
 
-    def launch(self, conf_file: str = f"{RES_DIR}/collect.json") -> List[TestData]:
+    def launch(self, conf_file: str = f"{RES_DIR}/collect.json") -> str:
         # 1. Environment check
         # TODO: LOGGER
         print("[R] Checking environment variables...")
@@ -264,19 +273,30 @@ class Runner:
             print(report)
             test_struct["result"] = test_result
 
-            # 4.4 Copy the logfile
-            shutil.copy(
-                src="trace_hart_00.dasm",
-                dst=f"{run_dir_name}/{test_struct['name']}.corelog",
-            )
-
+            # 4.4 Disassemble the logfile
+            try:
+                subprocess.run(
+                    ["spike-dasm"],
+                    stdin=open("trace_hart_00.dasm", "r"),
+                    stdout=open(f"{run_dir_name}/{test_struct['name']}.corelog", "w"),
+                    timeout=10,
+                    check=True,
+                    text=True,
+                )
+            except (
+                FileNotFoundError,
+                subprocess.CalledProcessError,
+                subprocess.TimeoutExpired,
+            ):
+                raise
         # 5. Output the json
         # TODO: Logger
         print("[R] - Writing test suite result...")
-        with open(f"{run_dir_name}/run-results.json", "w") as outfile:
+        out: str = f"{run_dir_name}/run-results.json"
+        with open(out, "w") as outfile:
             json.dump(test_structs, outfile, indent=2, separators=(",", ": "))
 
-        return test_structs
+        return out
 
     def report(
         self, run_file: Optional[str] = None
@@ -346,20 +366,10 @@ class Runner:
                 test_name = failed_test["name"]
                 test_group = failed_test["group"]
                 print(f"{ORANGE}   {test_group}{test_name}{RESET}")
-                try:
-                    subprocess.run(
-                        ["spike-dasm"],
-                        stdin=open(f"{log_dir}/{test_name}.corelog", "r"),
-                        stdout=open(f"{log_dir}/failed_tests/{test_name}.dasm", "w"),
-                        timeout=10,
-                        check=True,
-                        text=True,
-                    )
-                except (
-                    FileNotFoundError,
-                    subprocess.CalledProcessError,
-                    subprocess.TimeoutExpired,
-                ):
-                    raise
+                shutil.copy2(
+                    src=f"{log_dir}/{test_name}.corelog",
+                    dst=f"{log_dir}/failed_tests/",
+                )
+
             print(f"Failed tests disassembly are located in '{log_dir}/failed_tests'")
         return suite_counter

@@ -15,7 +15,6 @@ there's no ``runner.__main__`` in ``sys.modules``.
 Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
 
-
 import argparse
 import sys
 from typing import List, Optional
@@ -122,9 +121,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     elif args.command == "report":
         runner.report(args.runfile)
     elif args.command == "all":
-        runner.collect(args.group)
-        runner.launch()
-        runner.report()
+        collect_file = runner.collect(group=args.group)
+        run_results_file = runner.launch(conf_file=collect_file)
+        runner.report(run_file=run_results_file)
     else:
         parser.print_help()
         return 1
