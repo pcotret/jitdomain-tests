@@ -23,8 +23,6 @@ test_start:
     la t1, test_start_dom1
     auipc ra, 0
     addi  ra, ra, 12
-    auipc ra, 0
-    addi  ra, ra, 12
     chdom
     ld ra, 8(sp)
     addi sp, sp, 8
