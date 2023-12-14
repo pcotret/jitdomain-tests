@@ -134,13 +134,15 @@ pmp_setup:
     _____________________ */
 
     # Read the mode
-    csrr t0, mstatus
-
+    # csrr t0, mstatus
     # Setup user mode
-    li t1, MASK_MPP_USER_MODE
-    and t0, t0, t1             # Set MPP to user mode
-    or t0, t0, 8               # Set MIE
-    csrw mstatus, t0           # Write the value back to the CSR
+    # li t1, MASK_MPP_USER_MODE
+    # and t0, t0, t1             # Set MPP to user mode
+    # or t0, t0, 8               # Set MIE
+    # csrw mstatus, t0           # Write the value back to the CSR
+
+    # Equivalent? As MPP and MIE will be set to user mode
+    csrwi mstatus, 0 
 
     # Setup user mode entry address
     la t0, test_start
